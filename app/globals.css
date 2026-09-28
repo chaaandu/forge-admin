@@ -663,3 +663,27 @@ a.brand { color: #fff; text-decoration: none; }
   .t.cmp th:first-child, .t.cmp td.cmp-label { position: sticky; left: 0; z-index: 1; background: var(--card); }
   .tpick-list { width: 100%; }
 }
+
+/* ---------------------------------------------------------------- week grids that grow */
+
+/*
+ * Week grids gain a column a week. The card never widens: the grid scrolls
+ * inside it, opens at the newest week (ScrollToLatest), keeps the name column
+ * pinned, and shows a soft shadow on whichever edge has more to scroll.
+ */
+.week-scroll {
+  background:
+    linear-gradient(to right, var(--card) 30%, rgba(255, 255, 255, 0)) left center / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--card) 30%, rgba(255, 255, 255, 0)) right center / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(42, 24, 73, 0.14), rgba(42, 24, 73, 0)) left center / 12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(42, 24, 73, 0.14), rgba(42, 24, 73, 0)) right center / 12px 100% no-repeat scroll;
+}
+.grid-t td, .grid-t th { white-space: nowrap; }
+.grid-t td:first-child, .grid-t th:first-child { position: sticky; left: 0; z-index: 1; background: var(--card); }
+.grid-t td:first-child { box-shadow: 1px 0 0 var(--hair); }
+.scores-t td.fig, .scores-t th.r { text-align: center; }
+.tips-up .dot .tip { top: auto; bottom: calc(100% + 8px); }
+@media (max-width: 760px) {
+  /* Edge-to-edge padding would let scrolled cells show beside the pinned name column. */
+  .table-scroll.week-scroll { margin: 0; padding: 0; }
+}

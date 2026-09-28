@@ -6,6 +6,7 @@
 import { dayRange } from '@/lib/format'
 import type { checkinGrid, mentorCheckinGrid } from '@/lib/metrics'
 import { mentorWeekRange } from '@/lib/metrics'
+import { ScrollToLatest } from './ScrollToLatest'
 import { MentorLink, TeamLink } from './tables'
 
 function WeekHead({ w, current }: { w: number; current: number }) {
@@ -21,7 +22,7 @@ function WeekHead({ w, current }: { w: number; current: number }) {
 /** Rows are teams, columns are mentor weeks; a filled dot is a written check-in. */
 export function TeamCheckinGrid({ grid, current }: { grid: ReturnType<typeof checkinGrid>; current: number }) {
   return (
-    <div className="table-scroll">
+    <ScrollToLatest>
       <table className="t grid-t">
         <thead>
           <tr>
@@ -33,8 +34,9 @@ export function TeamCheckinGrid({ grid, current }: { grid: ReturnType<typeof che
           </tr>
         </thead>
         <tbody>
-          {grid.rows.map(({ team, cells }) => (
-            <tr key={team.id}>
+          {grid.rows.map(({ team, cells }, row) => (
+            // The grid scrolls, so it clips: notes on the lower half open upward.
+            <tr key={team.id} className={row >= grid.rows.length / 2 ? 'tips-up' : ''}>
               <td>
                 <TeamLink t={team} />
               </td>
@@ -64,7 +66,7 @@ export function TeamCheckinGrid({ grid, current }: { grid: ReturnType<typeof che
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollToLatest>
   )
 }
 
@@ -77,7 +79,7 @@ function heat(n: number, of: number): string {
 /** Rows are mentors, columns are mentor weeks; each cell is how many of their teams have notes that week. */
 export function MentorCheckinGrid({ grid, current }: { grid: ReturnType<typeof mentorCheckinGrid>; current: number }) {
   return (
-    <div className="table-scroll">
+    <ScrollToLatest>
       <table className="t grid-t">
         <thead>
           <tr>
@@ -104,6 +106,6 @@ export function MentorCheckinGrid({ grid, current }: { grid: ReturnType<typeof m
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollToLatest>
   )
 }

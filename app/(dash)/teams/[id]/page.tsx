@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import { DailyChart } from '@/components/DailyChart'
 import { ReadError, Updated } from '@/components/Shell'
 import { Assessment, MentorLink, Pace } from '@/components/tables'
+import { ScrollToLatest } from '@/components/ScrollToLatest'
 import { ThisWeekLabel } from '@/components/WeekDelta'
 import { inr } from '@/lib/format'
 import { instagramUrl, linkLabel, websiteUrl } from '@/lib/links'
@@ -179,7 +180,8 @@ function ScoresTable({ checkins }: { checkins: Checkin[] }) {
   ]
   const weeks = [...checkins].sort((a, b) => a.week - b.week)
   return (
-    <table className="t">
+    <ScrollToLatest>
+    <table className="t grid-t scores-t">
       <thead>
         <tr>
           <th />
@@ -206,5 +208,6 @@ function ScoresTable({ checkins }: { checkins: Checkin[] }) {
         ))}
       </tbody>
     </table>
+    </ScrollToLatest>
   )
 }
