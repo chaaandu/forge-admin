@@ -5,17 +5,17 @@
  */
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
+import { BASE, isPublicPath } from '@/lib/paths'
 import { isStaffEmail } from '@/lib/staff'
 
 export default auth((req) => {
-  // nextUrl.pathname is without the /admin basePath.
-  const path = req.nextUrl.pathname
-  if (path === '/login' || path.startsWith('/api/auth')) return
+  // In production Auth.js rebuilds `req` from AUTH_URL, which keeps the /admin
+  // prefix on the path and the public domain on the origin; locally it does
+  // neither. `isPublicPath` reads both shapes, and the redirect is spelled out
+  // in full so it lands on /admin/login either way.
+  if (isPublicPath(req.nextUrl.pathname)) return
   if (!isStaffEmail(req.auth?.user?.email)) {
-    const url = req.nextUrl.clone()
-    url.pathname = '/login'
-    url.search = ''
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(new URL(`${BASE}/login`, req.nextUrl.origin))
   }
 })
 
