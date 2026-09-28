@@ -11,7 +11,7 @@ const manrope = localFont({
 })
 
 export const metadata: Metadata = {
-  title: { template: '%s · Forge C1', default: 'Forge C1 · Staff' },
+  title: { template: '%s · Forge C1', default: 'Forge C1 · Admin Tracker' },
   robots: { index: false, follow: false },
 }
 

@@ -13,7 +13,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
   return (
     <div className="login">
       <div className="login-card">
-        <h1>Forge C1 · Staff</h1>
+        <h1>Forge C1 · Admin Tracker</h1>
         <p>Sign in with your @mesaschool.co account.</p>
         <form
           action={async () => {

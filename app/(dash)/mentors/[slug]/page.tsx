@@ -61,7 +61,7 @@ export default async function MentorPage({
   return (
     <>
       <div className="crumbs">
-        <Link href="/mentors">Mentors</Link> / {mentor.name}
+        <Link href="/mentors?view=all">All mentors</Link> / {mentor.name}
       </div>
       <div className="page-head">
         <div>

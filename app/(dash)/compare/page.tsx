@@ -2,10 +2,11 @@ import type { Metadata } from 'next'
 import { CompareChart } from '@/components/CompareChart'
 import { ReadError, Updated } from '@/components/Shell'
 import { Assessment, MentorLink, Pace, TeamLink } from '@/components/tables'
-import { TeamPicker } from '@/components/TeamPicker'
+import Link from 'next/link'
+import { TeamSlots } from '@/components/TeamSlots'
 import { behindLeader, best, cumulative, isEmptyRow, parseTeamsParam } from '@/lib/compare'
 import { dayRange, inr, pct } from '@/lib/format'
-import { byRevenue, CHANNELS, dailyCohort, lastCheckinWeek, ranks, weekSoFar } from '@/lib/metrics'
+import { byRevenue, CHANNELS, dailyCohort, flaggedTeams, lastCheckinWeek, ranks, weekSoFar } from '@/lib/metrics'
 import type { Checkin, Team } from '@/lib/parse'
 import { staffDashboard } from '@/lib/session'
 
@@ -43,7 +44,19 @@ export default async function Compare({ searchParams }: { searchParams: Promise<
   const mentorOf = (t: Team) => data.mentors.find((m) => m.key === t.mentorKey) ?? null
   const weeks = teams.map((t) => weekSoFar([t], now))
   const days = dailyCohort(data.teams, now).map((d) => d.date)
-  const options = [...data.teams].sort(byRevenue).map((t) => ({ id: t.id, venture: t.venture, product: t.product }))
+  const ranked = [...data.teams].sort(byRevenue)
+  const options = ranked.map((t) => ({ id: t.id, venture: t.venture, product: t.product, mentor: mentorOf(t)?.name ?? '' }))
+
+  // One-click starting points. A starter needs at least two teams to be worth offering.
+  const thisWeek = new Map(data.teams.map((t) => [t.id, weekSoFar([t], now).thisWeek]))
+  const starters = [
+    { label: 'Top 3 by revenue', teams: ranked.slice(0, 3) },
+    {
+      label: 'Top 3 this week',
+      teams: [...data.teams].filter((t) => thisWeek.get(t.id)! > 0).sort((a, b) => thisWeek.get(b.id)! - thisWeek.get(a.id)!).slice(0, 3),
+    },
+    { label: 'Flagged by mentors', teams: flaggedTeams(data.teams).slice(0, 3) },
+  ].filter((s) => s.teams.length >= 2)
 
   const money = (v: number | null) => (v === null ? '–' : inr(v))
   const gaps = behindLeader(teams.map((t) => t.revenue))
@@ -141,21 +154,33 @@ export default async function Compare({ searchParams }: { searchParams: Promise<
       <div className="page-head">
         <div>
           <h1>Compare</h1>
-          <p>Up to three teams side by side</p>
         </div>
         <Updated readAt={data.readAt} />
       </div>
 
-      <section className="card">
-        <TeamPicker all={options} selected={ids} />
+      <section className={`card cmp-pick${teams.length === 0 ? ' fresh' : ''}`}>
+        {teams.length === 0 && (
+          <div className="cmp-intro">
+            <h2>Pick two or three teams</h2>
+            <p>See their revenue so far, how they sell and what their mentors say, side by side.</p>
+          </div>
+        )}
+        <TeamSlots all={options} selected={ids} />
+        {teams.length === 0 && starters.length > 0 && (
+          <div className="starters">
+            <span className="starters-label">Or start with</span>
+            {starters.map((st) => (
+              <Link key={st.label} className="starter" href={`/compare?teams=${st.teams.map((t) => t.id).join(',')}`} replace scroll={false}>
+                <b>{st.label}</b>
+                <small>{st.teams.map((t) => t.venture || t.id).join(' · ')}</small>
+              </Link>
+            ))}
+          </div>
+        )}
+        {teams.length === 1 && <p className="cmp-hint">Add one more team to see the comparison.</p>}
       </section>
 
-      {teams.length === 0 ? (
-        <section className="card empty-state">
-          <b>Pick a team to start.</b>
-          <span>Search above by name, ID or product, or open any team and press Compare.</span>
-        </section>
-      ) : (
+      {teams.length >= 2 && (
         <div className="stack">
           <section className="card">
             <div className="card-h chart-h">

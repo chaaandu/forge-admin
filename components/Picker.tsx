@@ -29,7 +29,7 @@ export function MentorPicker({
         value={value}
         onChange={(e) => {
           const v = e.target.value
-          if (to.kind === 'mentor') router.push(v ? `/mentors/${v}` : '/mentors')
+          if (to.kind === 'mentor') router.push(v ? `/mentors/${v}` : '/mentors?view=all')
           else {
             const q = new URLSearchParams(to.keep)
             if (v) q.set('mentor', v)

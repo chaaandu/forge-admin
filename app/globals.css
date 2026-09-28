@@ -582,26 +582,6 @@ a.brand { color: #fff; text-decoration: none; }
 .pager a.cta { background: var(--accent); border-color: var(--accent); color: #fff; }
 .pager a.cta:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
 
-.picker-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.chip {
-  display: inline-flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px;
-  background: var(--accent-wash); border: 1px solid var(--hair-strong); border-radius: 999px; font-weight: 700;
-}
-.chip small { font-size: 11px; color: var(--muted); font-weight: 600; }
-.chip button {
-  width: 22px; height: 22px; border-radius: 50%; border: 0; cursor: pointer; font: inherit; font-size: 15px; line-height: 1;
-  color: var(--muted); background: transparent;
-}
-.chip button:hover { background: var(--hair-strong); color: var(--ink); }
-.tpick { position: relative; flex: 1; min-width: 220px; }
-.tpick input {
-  width: 100%; font: inherit; color: var(--ink); background: var(--card);
-  border: 1px dashed var(--hair-strong); border-radius: 999px; padding: 8px 14px;
-}
-.tpick input:focus { outline: none; border-style: solid; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-.tpick-list { left: 0; right: auto; width: 360px; max-width: 90vw; }
-.empty-state { margin-top: 16px; display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 36px; color: var(--muted); }
-.empty-state b { color: var(--ink); }
 
 .cmp-legend { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .cmp-legend li { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--ink-2); }
@@ -661,7 +641,6 @@ a.brand { color: #fff; text-decoration: none; }
   .t.cmp th:first-child, .t.cmp td.cmp-label { width: 110px; }
   .t.cmp { min-width: 480px; }
   .t.cmp th:first-child, .t.cmp td.cmp-label { position: sticky; left: 0; z-index: 1; background: var(--card); }
-  .tpick-list { width: 100%; }
 }
 
 /* ---------------------------------------------------------------- week grids that grow */
@@ -686,4 +665,56 @@ a.brand { color: #fff; text-decoration: none; }
 @media (max-width: 760px) {
   /* Edge-to-edge padding would let scrolled cells show beside the pinned name column. */
   .table-scroll.week-scroll { margin: 0; padding: 0; }
+}
+
+/* ---------------------------------------------------------------- compare: slots and starters */
+
+.cmp-pick.fresh { padding: 28px 28px 24px; }
+.cmp-intro h2 { font-size: 18px; font-weight: 800; }
+.cmp-intro p { margin: 4px 0 18px; color: var(--muted); }
+
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.slot {
+  position: relative; min-height: 64px; border-radius: 12px; display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; font: inherit; text-align: left;
+}
+.slot.filled { background: var(--card); border: 1px solid var(--hair-strong); border-top: 4px solid var(--c); }
+.slot-main { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.slot-main b { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot-main small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot-x {
+  flex: none; width: 28px; height: 28px; border-radius: 50%; border: 0; cursor: pointer; font: inherit; font-size: 18px; line-height: 1;
+  color: var(--muted); background: transparent;
+}
+.slot-x:hover { background: var(--neutral-bg); color: var(--ink); }
+.slot.empty {
+  justify-content: center; cursor: pointer; font-weight: 700; color: var(--brand);
+  background: var(--accent-wash); border: 1.5px dashed var(--hair-strong);
+}
+.slot.empty:hover { border-color: var(--accent); background: var(--card); }
+.slot.empty.later { cursor: default; color: var(--muted); font-weight: 600; background: transparent; }
+.slot.empty.later:hover { border-color: var(--hair-strong); }
+.slot-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.slot.empty.later .slot-dot { opacity: 0.35; }
+.slot.searching { padding: 0; border: 1.5px solid var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); background: var(--card); border-top: 4px solid var(--c); }
+.slot.searching input { width: 100%; height: 100%; min-height: 58px; font: inherit; border: 0; background: transparent; padding: 0 14px; color: var(--ink); border-radius: 12px; }
+.slot.searching input:focus { outline: none; }
+.slot-list { top: calc(100% + 6px); left: -1px; right: -1px; min-width: 0; }
+
+.starters { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--hair); }
+.starters-label { width: 100%; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.starter {
+  flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 2px; padding: 10px 14px;
+  border: 1px solid var(--hair-strong); border-radius: 10px; text-decoration: none; color: var(--ink); background: var(--card);
+}
+.starter:hover { border-color: var(--accent); background: var(--accent-wash); }
+.starter b { font-weight: 700; color: var(--brand); }
+.starter small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmp-hint { margin: 14px 0 0; color: var(--muted); }
+
+@media (max-width: 760px) {
+  .slots { grid-template-columns: 1fr; gap: 8px; }
+  .slot { min-height: 54px; }
+  .cmp-pick.fresh { padding: 18px 16px; }
+  .starter { min-width: 100%; }
 }

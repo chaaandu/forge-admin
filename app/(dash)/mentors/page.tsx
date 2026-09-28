@@ -5,13 +5,20 @@ import { MentorCheckinGrid } from '@/components/CheckinHistory'
 import { MentorsTable } from '@/components/tables'
 import { dayRange } from '@/lib/format'
 import { mentorCheckinGrid, mentorSummary, mentorWeek, weekSoFar } from '@/lib/metrics'
+import { redirect } from 'next/navigation'
 import { staffDashboard } from '@/lib/session'
 
 export const metadata: Metadata = { title: 'Mentors' }
 
-export default async function Mentors() {
+/**
+ * The Mentors tab opens on the first mentor's own view. The side-by-side list
+ * of every mentor is shown only when someone picks "All mentors" (`?view=all`).
+ */
+export default async function Mentors({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
   const { data, error } = await staffDashboard()
   if (error !== null) return <ReadError message={error} />
+  const { view } = await searchParams
+  if (view !== 'all' && data.mentors.length > 0) redirect(`/mentors/${data.mentors[0].slug}`)
 
   const now = new Date()
   const rows = data.mentors.map((m) => mentorSummary(m, data.teams, now)).sort((a, b) => b.revenue - a.revenue)
