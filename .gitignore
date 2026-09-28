@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# Secrets. The service account key and the OAuth client live here and nowhere else.
+.env*
+!.env.example
+
+# Real sheet data — student names, mentor notes. Never committed.
+fixtures/
+*.xlsx
+
+# The service account JSON key, if dropped here to be copied into .env.local.
+service-account*.json
+# The OAuth client JSON Google downloads.
+client_secret*.json

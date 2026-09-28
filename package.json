@@ -1,0 +1,30 @@
+{
+  "name": "forge-admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check-sheets": "node --env-file=.env.local scripts/check-sheets.ts",
+    "fixtures": "python3 scripts/xlsx-to-fixtures.py"
+  },
+  "dependencies": {
+    "google-auth-library": "^11.1.0",
+    "next": "16.3.0",
+    "next-auth": "^5.0.0-beta.32",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  }
+}
