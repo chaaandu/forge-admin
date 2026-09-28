@@ -20,6 +20,6 @@ export default auth((req) => {
 })
 
 export const config = {
-  // Everything except Next's own assets and the favicon.
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  // Everything except Next's own assets and the tab icons, which the sign-in page shows too.
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|apple-icon.png).*)'],
 }
