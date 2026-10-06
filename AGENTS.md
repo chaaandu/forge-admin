@@ -47,6 +47,12 @@ a missing check-in is shown per mentor rather than per team. "Recent check-in"
 means notes in the current mentor week or the one before. Week comparisons use
 finished days only.
 
+**How fresh the figures are.** The master's own sync brings team workbooks
+in about every 10 minutes; the dashboard reads the sheets live and reuses a
+read for 60 seconds (`lib/sheets.ts`); an open page refreshes itself every
+60 seconds while its tab is visible (`components/AutoRefresh.tsx`). So a sale
+shows in about 10 to 11 minutes and a mentor's note within about a minute.
+
 **Two kinds of week, and every label shows its dates.** Sales weeks ("This
 week", the weekly chart) run Monday to Sunday from 31 August. Mentor weeks
 (check-ins, Wk1–Wk8) run Tuesday to Monday, because the mentor sheet counts

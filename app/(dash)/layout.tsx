@@ -1,3 +1,4 @@
+import { AutoRefresh } from '@/components/AutoRefresh'
 import { Shell } from '@/components/Shell'
 import { buildIndex } from '@/lib/searchIndex'
 import { requireStaff } from '@/lib/session'
@@ -19,6 +20,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     .catch(() => [])
   return (
     <Shell user={user} index={index}>
+      <AutoRefresh />
       {children}
     </Shell>
   )
